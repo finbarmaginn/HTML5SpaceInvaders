@@ -1,7 +1,4 @@
-///<reference path="Game.ts" />
-
-
-import Game = require("Game");
+import Game  from "Game";
 export class Bullet implements GameObject {
 
 

@@ -1,10 +1,10 @@
-///<reference path="./d.ts/lib.d.ts" />
-///<reference path="./GameObjects.ts"/>
-///<reference path="./Invaders.ts"/>
-///<reference path="./Common.ts"/>
-///<reference path="./PlayerBase.ts"/>
-///<reference path="./Player.ts"/>
-///<reference path="./Waves.ts"/>
+import Waves from "./d.ts/lib.d.ts"
+import GameObjects from "./GameObjects.ts"
+import Invaders from "./Invaders.ts"
+import {CartesianCoordinate} from "./Common.ts"
+import PlayerBase from "./PlayerBase.ts"
+import Player from "./Player.ts"
+import Waves from "./Waves.ts"
 
 import GameObjects = require("GameObjects")
 import Invaders = require("Invaders")
@@ -22,7 +22,7 @@ interface Object {
   construct(base): any;
 }
 
-export class Game {
+export default class Game {
   static CANVAS_WIDTH:number = 1000;
   static CANVAS_HEIGHT:number = 800;
 

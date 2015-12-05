@@ -1,8 +1,6 @@
-///<reference path="./Game.ts"/>
+import Game from "./Game";
 
-import Game = require("Game");
-
-var game = new Game.Game();
+var game = new Game();
 
 //game.handleCollisions.bind(game);
 window.addEventListener("keydown", (game.onKeyDown.bind(game)));

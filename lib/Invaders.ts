@@ -1,11 +1,8 @@
-///<reference path="Common.ts" />
-///<reference path="Projectile.ts" />
+import "Common.ts"
+import "Projectile.ts"
 
-import Projectile = require("Projectile");
-import Common = require("Common");
-CartesianCoordinate = Common.CartesianCoordinate;
-Dimensions_2D = Common.Dimensions_2D;
-Vector_2D = Common.Vector_2D;
+import {Projectile}  from "./Projectile";
+import {CartesianCoordinate,Dimensions_2D,Vector_2D} from "Common";
 
 
 export class Enemy implements GameObject {
