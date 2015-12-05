@@ -1,5 +1,5 @@
 import {TinyBullet,LargeBullet,Bullet}  from "./Projectile";
-import {CartesianCoordinate,Dimensions_2D,Vector_2D,GameObject} from "Common";
+import {CartesianCoordinate,Dimensions_2D,Vector_2D,GameObject} from "./Common";
 
 
 export class Enemy implements GameObject {
@@ -8,6 +8,7 @@ export class Enemy implements GameObject {
   static DEFAULT_HEIGHT:number = 12;
   static DEFAULT_WIDTH:number = 30;
   static DEFAULT_HORIZONTAL_SPEED:number = 2;
+
 
   position:CartesianCoordinate;
   dimensions:Dimensions_2D = new Dimensions_2D(Enemy.DEFAULT_WIDTH, Enemy.DEFAULT_HEIGHT);
@@ -54,9 +55,7 @@ export class Enemy implements GameObject {
 
   shootTinyBullet() {
     var bulletPosition:CartesianCoordinate = this.midpoint();
-    var bulletToBeFired = new
-    import TinyBullet
-    (bulletPosition, false);
+    var bulletToBeFired = new TinyBullet(bulletPosition, false);
     return bulletToBeFired;
   }
 
@@ -68,9 +67,7 @@ export class Enemy implements GameObject {
       var angle = 225 + i * (90 / num);
       var radAngle = (angle / 360) * 2 * Math.PI;
       var customVector = new Vector_2D(-Math.cos(radAngle), -Math.sin(radAngle));
-      arr.push(new
-      import TinyBullet
-      (this.midpoint(), false, customVector)
+      arr.push(new TinyBullet(this.midpoint(), false, customVector)
     )
       ;
     }
@@ -85,9 +82,7 @@ export class Enemy implements GameObject {
       var angle = 225 + i * (90 / num);
       var radAngle = (angle / 360) * 2 * Math.PI;
       var customVector = new Vector_2D(-Math.cos(radAngle) / 2, -Math.sin(radAngle) / 2);
-      arr.push(new
-      import TinyBullet
-      (this.midpoint(), false, customVector)
+      arr.push(new TinyBullet(this.midpoint(), false, customVector)
     )
       ;
     }
@@ -108,6 +103,7 @@ export class Enemy implements GameObject {
   }
 
   shoot() {
+    return this.shootTinyBullet();
   }
 }
 
@@ -156,9 +152,7 @@ export class EnemyBoss extends Enemy {
       bulletToFire = this.shootLargeFastfan();
     }
     else if (x > 0.5 && x < 1) {
-      bulletToFire = new
-      import LargeBullet
-      (this.midpoint(), false);
+      bulletToFire = new LargeBullet(this.midpoint(), false);
     }
     return bulletToFire
 
@@ -200,9 +194,7 @@ export class EnemyKing extends Enemy {
       bulletToFire = this.shootLargeFastfan();
     }
     else if (x > 0.5 && x < 1) {
-      bulletToFire = new
-      import LargeBullet
-      (this.midpoint(), false);
+      bulletToFire = new LargeBullet(this.midpoint(), false);
     }
     return bulletToFire
 

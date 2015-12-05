@@ -1,5 +1,4 @@
-import {CartesianCoordinate,Dimensions_2D,Vector_2D} from "./Common";
-import {GameObject}from "Common"
+import {CartesianCoordinate,Dimensions_2D,Vector_2D,GameObject} from "./Common";
 import {TinyBullet,LargeBullet,Bullet,PlayerBullet}  from "./Projectile";
 
 export default class Player implements GameObject {

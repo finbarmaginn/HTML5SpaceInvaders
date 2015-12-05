@@ -1,6 +1,6 @@
 import {GameObject,CartesianCoordinate,Dimensions_2D,Vector_2D} from "./Common";
 
-export class DestructibleScenery implements GameObject {
+export class DestructibleScenery  {
 
     static DEFAULT_SIZE:number = 5;
     position:CartesianCoordinate;
@@ -31,7 +31,8 @@ export class DestructibleScenery implements GameObject {
 /**
  * The classic Green protective bases the player can hide behind
  */
-export  class PlayerBase implements GameObject {
+export  class PlayerBase {
+//export  class PlayerBase implements GameObject {
 
     position:CartesianCoordinate; //the initial location the base is rendered, taken to be the top left of the base
     particles = [];

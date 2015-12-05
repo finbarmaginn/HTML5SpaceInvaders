@@ -2,9 +2,14 @@ import {PlayerBase,DestructibleScenery} from "./PlayerBase"
 import Player from "./Player"
 import Waves from "./Waves"
 
-import {KEYS,GameObject,CartesianCoordinate,Dimensions_2D,Vector_2D} from "./Common";
+import {KEYS,GameObject,CartesianCoordinate,Dimensions_2D,Vector_2D,GAME_DEFAULTS} from "./Common";
 import {TinyBullet,LargeBullet,Bullet,PlayerBullet}  from "./Projectile";
 import {Enemy,EnemyGrunt,EnemyBoss,EnemyKing} from "./Invaders";
+
+interface Number {
+  clamp(min, max): number;
+}
+
 
 
 //to get src to compile
@@ -26,13 +31,19 @@ export default class Game {
 
   enemyBulletsSideA = [];
 
-  player:Player.Player;
+  player:Player;
 
   canvas:HTMLCanvasElement = <HTMLCanvasElement> document.getElementById('canvas');
 
   context2D:CanvasRenderingContext2D;
 
-  stats = {count: 0};
+  stats = {
+    count: 0,
+    fps: 0,
+    update: 0,
+    draw: 0,
+    frame: 0  // update + draw
+  };
 
   //background scenery objects
   playerBaseHeight:number = 20;
@@ -120,19 +131,12 @@ export default class Game {
 
   initGame() {
     //bottom middle
-    this.player = new Player.Player(new CartesianCoordinate(Game.CANVAS_WIDTH / 2, Game.CANVAS_HEIGHT - this.playerBaseHeight - Player.Player.DEFAULT_HEIGHT));
-    this.player.OnShoot = function (bullet:GameObjects.Bullet) {
+    this.player = new Player(new CartesianCoordinate(Game.CANVAS_WIDTH / 2, Game.CANVAS_HEIGHT - this.playerBaseHeight - Player.DEFAULT_HEIGHT));
+    this.player.OnShoot = function (bullet:Bullet) {
       this.playerBullets.push(bullet);
     }
     this.nextWave();
     this.createStars();
-  }
-
-  isCompatible() {
-    return Object.create &&
-      Object.extend &&
-      Function.bind &&
-      document.addEventListener
   }
 
   drawBackground() {
@@ -196,22 +200,17 @@ export default class Game {
         this.enemies = Waves.Wave8();
         break;
       }
-      case 9:
-      {
-        this.enemies = Waves.Wave9();
-        break;
-      }
         alert("You win!! Well done.");
     }
   }
 
-
+//todo
   createStars() {
     for (var i = 0; i <= this.NUMBER_OF_STARS; i++) {
       var randX = Math.round(Math.random() * Game.CANVAS_WIDTH);
       var randY = Math.round(Math.random() * Game.CANVAS_HEIGHT);
-      var star = new GameObjects.Star(randX, randY);
-      this.stars.push(star);
+      // var star = new Star(randX, randY);
+      //  this.stars.push(star);
     }
   }
 
@@ -235,7 +234,7 @@ export default class Game {
         //todo optimise for max base height
         self.bases.forEach(function (base:PlayerBase) {
 
-          particles.forEach(function (particle:DestructibleScenery) {
+          base.particles.forEach(function (particle:DestructibleScenery) {
             if (self.collides(bullet, particle)) {
               particle.explode();
               bullet.active = false;
@@ -248,13 +247,13 @@ export default class Game {
     );
 
 
-    self.enemyBulletsSideA.forEach(function (bullet:GameObjects.Bullet) {
+    self.enemyBulletsSideA.forEach(function (bullet:Bullet) {
       if (self.collides(bullet, self.player)) {
         self.player.explode();
         bullet.active = false;
       }
       self.bases.forEach(function (base:PlayerBase) {
-        particles.forEach(function (particle:DestructibleScenery) {
+        base.particles.forEach(function (particle:DestructibleScenery) {
           if (self.collides(bullet, particle)) {
             particle.explode();
             bullet.active = false;
@@ -272,13 +271,13 @@ export default class Game {
     this.enemies.forEach(function (thing) {
       thing.draw(that.context2D);
     });
-    this.playerBullets.forEach(function (thing:GameObjects.Bullet) {
+    this.playerBullets.forEach(function (thing:Bullet) {
       thing.draw(that.context2D);
     });
-    this.enemyBulletsSideA.forEach(function (thing:GameObjects.Bullet) {
+    this.enemyBulletsSideA.forEach(function (thing:Bullet) {
       thing.draw(that.context2D);
     });
-    this.bases.forEach(function (thing:PlayerPlayerBase) {
+    this.bases.forEach(function (thing:PlayerBase) {
       thing.draw(that.context2D);
     });
     this.drawStats(this.context2D);
@@ -328,7 +327,7 @@ export default class Game {
 
       if (Math.random() < enemy.probabilityOfShooting) {
         var fire = enemy.shoot();
-        if (fire.length) {
+        if (fire.hasOwnProperty("length")) {
           self.enemyBulletsSideA = self.enemyBulletsSideA.concat(fire);
         } else {
           self.enemyBulletsSideA.push(fire);
@@ -344,7 +343,7 @@ export default class Game {
   updateBases() {
     var self = this;
     self.bases.forEach(function (base:PlayerBase) {
-      particles = particles.filter(function (particle) {
+      base.particles = base.particles.filter(function (particle) {
         return particle.active;
       });
     });
@@ -375,14 +374,14 @@ export default class Game {
     this.playerBullets = this.playerBullets.filter(function (bullet) {
       return bullet.active;
     });
-    this.playerBullets.forEach(function (bullet:GameObjects.Bullet) {
+    this.playerBullets.forEach(function (bullet:Bullet) {
       bullet.update(elapsedUnit);
     });
 
     this.enemyBulletsSideA = this.enemyBulletsSideA.filter(function (bullet) {
       return bullet.active;
     });
-    this.enemyBulletsSideA.forEach(function (bullet:GameObjects.Bullet) {
+    this.enemyBulletsSideA.forEach(function (bullet:Bullet) {
       bullet.update(elapsedUnit);
     });
   }
@@ -408,7 +407,6 @@ export default class Game {
 
 //_______________________________________________________________________________todo remove this in prod
   updateStats(update, draw) {
-    this.stats.wave = this.waveNumber;
     this.stats.update = Math.max(1, update);
     this.stats.draw = Math.max(1, draw);
     this.stats.frame = this.stats.update + this.stats.draw;

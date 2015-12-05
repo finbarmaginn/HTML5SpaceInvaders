@@ -1,4 +1,4 @@
-import {Enemy,EnemyGrunt,EnemyBoss,EnemyKing} from "Invaders";
+import {Enemy,EnemyGrunt,EnemyBoss,EnemyKing} from "./Invaders";
 import {CartesianCoordinate,Dimensions_2D,Vector_2D} from "./Common";
 
 

@@ -1,7 +1,5 @@
 import Game  from "./Game";
-import {CartesianCoordinate,Dimensions_2D,Vector_2D} from "./Common";
-import {GameObject}from "Common.ts"
-import {TinyBullet,LargeBullet,Bullet,PlayerBullet}  from "./Projectile";
+import {CartesianCoordinate,Dimensions_2D,Vector_2D,GameObject} from "./Common";
 
 
 export class Bullet implements GameObject {
