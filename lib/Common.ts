@@ -34,7 +34,7 @@ export interface GameObject {
     draw(canvas:CanvasRenderingContext2D);
     update(elapsedUnit:number);
     position:CartesianCoordinate;
-    dimensions:Dimensions_2D;
+    //dimensions:Dimensions_2D;
 
 }
 

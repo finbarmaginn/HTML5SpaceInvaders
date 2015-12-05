@@ -1,8 +1,5 @@
-import "Common.ts"
-import "Projectile.ts"
-
-import {Projectile}  from "./Projectile";
-import {CartesianCoordinate,Dimensions_2D,Vector_2D} from "Common";
+import {TinyBullet,LargeBullet,Bullet}  from "./Projectile";
+import {CartesianCoordinate,Dimensions_2D,Vector_2D,GameObject} from "Common";
 
 
 export class Enemy implements GameObject {
@@ -41,7 +38,7 @@ export class Enemy implements GameObject {
     // todo boom graphic
   }
 
-  takeHit(bullet:Projectile.Bullet) {
+  takeHit(bullet:Bullet) {
     this.health -= bullet.damageInflicted;
     if (this.health <= 0) {
       this.explode();
@@ -57,7 +54,9 @@ export class Enemy implements GameObject {
 
   shootTinyBullet() {
     var bulletPosition:CartesianCoordinate = this.midpoint();
-    var bulletToBeFired = new Projectile.TinyBullet(bulletPosition, false);
+    var bulletToBeFired = new
+    import TinyBullet
+    (bulletPosition, false);
     return bulletToBeFired;
   }
 
@@ -69,7 +68,11 @@ export class Enemy implements GameObject {
       var angle = 225 + i * (90 / num);
       var radAngle = (angle / 360) * 2 * Math.PI;
       var customVector = new Vector_2D(-Math.cos(radAngle), -Math.sin(radAngle));
-      arr.push(new Projectile.TinyBullet(this.midpoint(), false, customVector));
+      arr.push(new
+      import TinyBullet
+      (this.midpoint(), false, customVector)
+    )
+      ;
     }
     return arr;
   }
@@ -82,7 +85,11 @@ export class Enemy implements GameObject {
       var angle = 225 + i * (90 / num);
       var radAngle = (angle / 360) * 2 * Math.PI;
       var customVector = new Vector_2D(-Math.cos(radAngle) / 2, -Math.sin(radAngle) / 2);
-      arr.push(new Projectile.TinyBullet(this.midpoint(), false, customVector));
+      arr.push(new
+      import TinyBullet
+      (this.midpoint(), false, customVector)
+    )
+      ;
     }
     return arr;
   }
@@ -95,7 +102,7 @@ export class Enemy implements GameObject {
       var angle = 225 + i * (90 / num);
       var radAngle = (angle / 360) * 2 * Math.PI;
       var customVector = new Vector_2D(-Math.cos(radAngle) * 3, -Math.sin(radAngle) * 3);
-      arr.push(new Projectile.LargeBullet(this.midpoint(), false, customVector));
+      arr.push(new LargeBullet(this.midpoint(), false, customVector));
     }
     return arr;
   }
@@ -149,7 +156,9 @@ export class EnemyBoss extends Enemy {
       bulletToFire = this.shootLargeFastfan();
     }
     else if (x > 0.5 && x < 1) {
-      bulletToFire = new Projectile.LargeBullet(this.midpoint(), false);
+      bulletToFire = new
+      import LargeBullet
+      (this.midpoint(), false);
     }
     return bulletToFire
 
@@ -191,7 +200,9 @@ export class EnemyKing extends Enemy {
       bulletToFire = this.shootLargeFastfan();
     }
     else if (x > 0.5 && x < 1) {
-      bulletToFire = new Projectile.LargeBullet(this.midpoint(), false);
+      bulletToFire = new
+      import LargeBullet
+      (this.midpoint(), false);
     }
     return bulletToFire
 

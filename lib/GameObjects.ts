@@ -1,13 +1,7 @@
-///<reference path="Common.ts" />
-///<reference path="Projectile.ts" />
+import {CartesianCoordinate,Dimensions_2D,Vector_2D} from "./Common";
+import {GameObject}from "Common.ts"
+import {TinyBullet,LargeBullet,Bullet,PlayerBullet}  from "./Projectile";
 
-import Projectile = require("Projectile");
-import Common = require("Common");
-CartesianCoordinate = Common.CartesianCoordinate;
-Dimensions_2D = Common.Dimensions_2D;
-Vector_2D = Common.Vector_2D;
-
-;
 
 
 export class Star implements GameObject {

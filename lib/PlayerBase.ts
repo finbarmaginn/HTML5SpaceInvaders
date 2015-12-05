@@ -1,7 +1,4 @@
-///<reference path="Common.ts" />
-import Common = require("Common");
-CartesianCoordinate = Common.CartesianCoordinate;
-Dimensions_2D = Common.Dimensions_2D;
+import {GameObject,CartesianCoordinate,Dimensions_2D,Vector_2D} from "./Common";
 
 export class DestructibleScenery implements GameObject {
 
@@ -34,7 +31,7 @@ export class DestructibleScenery implements GameObject {
 /**
  * The classic Green protective bases the player can hide behind
  */
-export class PlayerBase implements GameObject {
+export  class PlayerBase implements GameObject {
 
     position:CartesianCoordinate; //the initial location the base is rendered, taken to be the top left of the base
     particles = [];

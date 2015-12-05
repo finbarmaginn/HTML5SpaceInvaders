@@ -1,20 +1,11 @@
-import Waves from "./d.ts/lib.d.ts"
-import GameObjects from "./GameObjects.ts"
-import Invaders from "./Invaders.ts"
-import {CartesianCoordinate} from "./Common.ts"
-import PlayerBase from "./PlayerBase.ts"
-import Player from "./Player.ts"
-import Waves from "./Waves.ts"
+import {PlayerBase,DestructibleScenery} from "./PlayerBase"
+import Player from "./Player"
+import Waves from "./Waves"
 
-import GameObjects = require("GameObjects")
-import Invaders = require("Invaders")
-import Base = require("PlayerBase")
-import Player = require("Player")
-import Waves = require("Waves")
+import {KEYS,GameObject,CartesianCoordinate,Dimensions_2D,Vector_2D} from "./Common";
+import {TinyBullet,LargeBullet,Bullet,PlayerBullet}  from "./Projectile";
+import {Enemy,EnemyGrunt,EnemyBoss,EnemyKing} from "./Invaders";
 
-
-import Common = require("Common")
-CartesianCoordinate = Common.CartesianCoordinate;
 
 //to get src to compile
 interface Object {
@@ -29,7 +20,7 @@ export default class Game {
   waveNumber:number = 4;
   NUMBER_OF_STARS:number = 50;
   FPS:number = 45; // this will depend on latency
-  bases:Array<Base.PlayerBase>;
+  bases:Array<PlayerBase>;
   enemies = [];
   playerBullets = [];
 
@@ -63,7 +54,7 @@ export default class Game {
   update() {
     var start = this.timestamp();
     var elapsedTime:number = start - this.lastFrame;
-    var elapsedReduced:number = (elapsedTime / 1000.0) * Common.GAME_DEFAULTS.GAME_SPEED; // send dt as seconds
+    var elapsedReduced:number = (elapsedTime / 1000.0) * GAME_DEFAULTS.GAME_SPEED; // send dt as seconds
 
     this.updateBullets(elapsedReduced);
     this.updatePlayer(elapsedReduced);
@@ -99,20 +90,20 @@ export default class Game {
   }
 
   createBases() {
-    this.bases = new Array<Base.PlayerBase>();// clear old one if there
+    this.bases = new Array<PlayerBase>();// clear old one if there
     var noOfBases = 4;
     var spacing = Game.CANVAS_WIDTH / noOfBases;
     for (var i = 0; i < noOfBases; i++) {
-      this.bases.push(new Base.PlayerBase(new Common.CartesianCoordinate(spacing / 2 + (spacing * i), Game.CANVAS_HEIGHT - 150)));
+      this.bases.push(new PlayerBase(new CartesianCoordinate(spacing / 2 + (spacing * i), Game.CANVAS_HEIGHT - 150)));
     }
   }
 
   onKeyDown(evt) {
-    if (evt.keyCode == Common.KEYS.RIGHT) this.rightDown = true;
-    else if (evt.keyCode == Common.KEYS.LEFT) this.leftDown = true;
-    else if (evt.keyCode == Common.KEYS.UP) this.upDown = true;
-    else if (evt.keyCode == Common.KEYS.DOWN) this.downDown = true;
-    if (evt.keyCode == Common.KEYS.SPACE) {
+    if (evt.keyCode == KEYS.RIGHT) this.rightDown = true;
+    else if (evt.keyCode == KEYS.LEFT) this.leftDown = true;
+    else if (evt.keyCode == KEYS.UP) this.upDown = true;
+    else if (evt.keyCode == KEYS.DOWN) this.downDown = true;
+    if (evt.keyCode == KEYS.SPACE) {
       this.space = true;
       this.playerBullets.push(this.player.shoot());
     }
@@ -120,11 +111,11 @@ export default class Game {
   }
 
   onKeyUp(evt) {
-    if (evt.keyCode == Common.KEYS.RIGHT) this.rightDown = false;
-    if (evt.keyCode == Common.KEYS.LEFT) this.leftDown = false;
-    if (evt.keyCode == Common.KEYS.UP) this.upDown = false;
-    if (evt.keyCode == Common.KEYS.DOWN) this.downDown = false;
-    if (evt.keyCode == Common.KEYS.SPACE) this.space = false;
+    if (evt.keyCode == KEYS.RIGHT) this.rightDown = false;
+    if (evt.keyCode == KEYS.LEFT) this.leftDown = false;
+    if (evt.keyCode == KEYS.UP) this.upDown = false;
+    if (evt.keyCode == KEYS.DOWN) this.downDown = false;
+    if (evt.keyCode == KEYS.SPACE) this.space = false;
   }
 
   initGame() {
@@ -233,8 +224,8 @@ export default class Game {
 
   handleCollisions() {
     var self = this;
-    self.playerBullets.forEach(function (bullet:Projectile.Bullet) {
-        self.enemies.forEach(function (enemy:Invaders.Enemy) {
+    self.playerBullets.forEach(function (bullet:Bullet) {
+        self.enemies.forEach(function (enemy:Enemy) {
           if (self.collides(bullet, enemy)) {
 
             enemy.takeHit(bullet);
@@ -242,9 +233,9 @@ export default class Game {
           }
         });
         //todo optimise for max base height
-        self.bases.forEach(function (base:Base.PlayerBase) {
+        self.bases.forEach(function (base:PlayerBase) {
 
-          base.particles.forEach(function (particle:Base.DestructibleScenery) {
+          particles.forEach(function (particle:DestructibleScenery) {
             if (self.collides(bullet, particle)) {
               particle.explode();
               bullet.active = false;
@@ -262,8 +253,8 @@ export default class Game {
         self.player.explode();
         bullet.active = false;
       }
-      self.bases.forEach(function (base:Base.PlayerBase) {
-        base.particles.forEach(function (particle:Base.DestructibleScenery) {
+      self.bases.forEach(function (base:PlayerBase) {
+        particles.forEach(function (particle:DestructibleScenery) {
           if (self.collides(bullet, particle)) {
             particle.explode();
             bullet.active = false;
@@ -287,7 +278,7 @@ export default class Game {
     this.enemyBulletsSideA.forEach(function (thing:GameObjects.Bullet) {
       thing.draw(that.context2D);
     });
-    this.bases.forEach(function (thing:PlayerBase.PlayerBase) {
+    this.bases.forEach(function (thing:PlayerPlayerBase) {
       thing.draw(that.context2D);
     });
     this.drawStats(this.context2D);
@@ -310,7 +301,7 @@ export default class Game {
       return;
     }
 
-    this.enemies.forEach(function (enemy:Invaders.Enemy) {
+    this.enemies.forEach(function (enemy:Enemy) {
       //moving to the right
       enemy.vector.xVelocity = enemy.vector.xVelocity * -1;
       enemy.position.x += offset * -1;
@@ -326,14 +317,14 @@ export default class Game {
       return enemy.active;
     });
 
-    self.enemies.forEach(function (enemy:Invaders.Enemy) {
+    self.enemies.forEach(function (enemy:Enemy) {
       enemy.update(elapsedUnit);// this might move things out of bounds so check next
     });
 
     self.ReverseEnemyDirectionIfOutOfBoundsAndDropDown();
 
     //shoot after above check is done
-    self.enemies.forEach(function (enemy:Invaders.Enemy) {
+    self.enemies.forEach(function (enemy:Enemy) {
 
       if (Math.random() < enemy.probabilityOfShooting) {
         var fire = enemy.shoot();
@@ -352,8 +343,8 @@ export default class Game {
    */
   updateBases() {
     var self = this;
-    self.bases.forEach(function (base:Base.PlayerBase) {
-      base.particles = base.particles.filter(function (particle) {
+    self.bases.forEach(function (base:PlayerBase) {
+      particles = particles.filter(function (particle) {
         return particle.active;
       });
     });
