@@ -12,7 +12,7 @@ export default class Player implements GameObject {
   static DEFAULT_WIDTH:number = 20;
   DefaultMovementSpeed:number = 7;
 
-  currentWeapon:Bullet;
+  currentWeapon:Bullet;//todo add more
   public OnShoot:Function;
 
   constructor(position) {
@@ -23,6 +23,10 @@ export default class Player implements GameObject {
     context2D.fillStyle = this.color;
     context2D.fillRect(this.position.x, this.position.y, this.dimensions.width, this.dimensions.height);
     context2D.fillRect(this.position.x, this.position.y, this.dimensions.width, this.dimensions.height);
+
+   // var path = new Path2D('M 100,100 h 50 v 50 h 50');
+   // context2D.stroke(path);
+
 
   }
 

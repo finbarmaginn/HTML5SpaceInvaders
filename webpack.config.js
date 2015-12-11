@@ -2,7 +2,7 @@ module.exports = {
   context: __dirname + "/lib",
   entry: {
     main: [
-      "./game.ts"
+      "./Main.ts"
     ]
   },
   output: {
