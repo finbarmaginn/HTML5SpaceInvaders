@@ -1,7 +1,7 @@
 HTML5SpaceInvaders 
 ==================
 
-### (Demo)[]
+###[Demo](http://quantuminformation.github.io/HTML5SpaceInvaders/) 
 
 ### Running the game locally
 

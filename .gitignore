@@ -4,4 +4,4 @@ node_modules
 app/bower_components
 app/js/*.js
 app/js/*.map
-/dist
+
