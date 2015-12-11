@@ -6,10 +6,6 @@ import {KEYS,GameObject,CartesianCoordinate,Dimensions_2D,Vector_2D,GAME_DEFAULT
 import {TinyBullet,LargeBullet,Bullet,PlayerBullet}  from "./Projectile";
 import {Enemy,EnemyGrunt,EnemyBoss,EnemyKing} from "./Invaders";
 
-interface Number {
-  clamp(min, max): number;
-}
-
 
 
 //to get src to compile
